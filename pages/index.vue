@@ -8,17 +8,18 @@
           margin: 2rem 0;
           /* width: 35rem; */
           padding: 3rem 3rem;
-          background: #1c1b20;
+          background: #f4f2f1;
           border-radius: 10px;
         "
       >
-        <h1 class="text-center mb-[1rem] text-xl text-bgfrom"><strong>Ino Bridge</strong></h1>
+          <img src="https://xitcoin.org/wp-content/uploads/2025/01/baniere.png" alt="" srcset="">
+        <h1 class="text-center mb-[1rem] text-xl text-[#53585E]"><strong>XTC Bridge</strong></h1>
   
         <div class="flex gap-3 justify-center items-end">
           <div class="sm:col-span-3" style="width: 100%">
             <label
               for="first-name"
-              class="block text-sm font-medium leading-6 text-white"
+              class="block text-sm font-medium leading-6 text-[#37393B]"
               >From</label
             >
             <div class="">
@@ -60,7 +61,7 @@
           <div class="sm:col-span-3" style="width: 100%">
             <label
               for="first-name"
-              class="block text-sm font-medium leading-6 text-white"
+              class="block text-sm font-medium leading-6 text-[#37393B]"
               >To</label
             >
             <div class="mt-2">
@@ -99,7 +100,7 @@
           <div class="sm:col-span-3" style="width: 100%">
             <label
               for="first-name"
-              class="block text-sm font-medium leading-6 text-white"
+              class="block text-sm font-medium leading-6 text-[#37393B]"
               >Amount</label
             >
             <div class="mt-2">
@@ -119,7 +120,7 @@
         </button> -->
         <button
           @click="send"
-          class="btnHover inline-flex text-[#c4cfde] items-center justify-center w-[100%] whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 bg-gradient-to-r from-bgfrom to-bgto"
+          class="inline-flex text-[#f4f2f1] items-center justify-center w-[100%] whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 bg-[#2A85F3] hover:bg-[#FB8D00]"
         >
           Send
         </button>
@@ -157,6 +158,11 @@ import {
   inoContract,
   ethToken,
   cronosContract,
+  ethBridgeAddress,
+  inoaiBridgeAddress,
+  inoaiBridgeABI,
+  inoaierc20,
+  etherc20
 } from "../constants/contract-addresses";
 import ethAbi from "../constants/eth-abi.json";
 import ethTokenAbi from "../constants/ethTokenAbi.json";
@@ -164,6 +170,9 @@ import ethTokenAbi from "../constants/ethTokenAbi.json";
 import ethLogo from "../assets/logo/eth.png";
 import croLogo from "../assets/logo/cro.png";
 const toast = useToast();
+
+
+
 
 const chains = [
   {
@@ -199,100 +208,35 @@ const currentChainId = ref();
 const amountS = ref();
 const signer = "0xbDcA717A17B0D41283f2f4fE6b62431D4a19f152";
 
-const ethToIno = async () => {
-  try {
-    isOpen.value = true;
-    const web3 = new Web3(window.ethereum);
-    const web3Eth = new web3.eth.Contract(ethAbi, ethContract);
-    const web3Ino = new web3.eth.Contract(ethAbi, inoContract);
-    const senderAddress = fromAddress.value;
-    const to = toAddress.value;
-    const amount = amountS.value * 1e18;
-    // const amount = amountS.value
-    const transaction = await web3Eth.methods
-      .burnTokens(amount)
-      .send({ from: senderAddress });
-    console.log("burn transaction", transaction);
 
-    const nonce = await web3Rpc.web3InoRpc.eth.getTransactionCount(signer);
-
-    // Build the transaction object
-    const gasPrice = await web3Rpc.web3InoRpc.eth.getGasPrice();
-    const gasLimit = 300000; // Adjust the gas limit as needed
-    const data = web3Ino.methods.mintTokens(to, amount).encodeABI();
-    const transactionObject = {
-      from: signer,
-      to: inoContract,
-      nonce: web3.utils.toHex(nonce),
-      gasPrice: web3.utils.toHex(gasPrice),
-      gasLimit: web3.utils.toHex(gasLimit),
-      data: data,
-    };
-
-    // Sign the transaction
-    const signedTransaction =
-      await web3Rpc.web3InoRpc.eth.accounts.signTransaction(
-        transactionObject,
-        privateKey
-      );
-
-    // Send the signed transaction
-    const receiptMint = await web3Rpc.web3InoRpc.eth.sendSignedTransaction(
-      signedTransaction.rawTransaction
-    );
-
-    // Transaction successful
-    console.log("Transaction successful:", receiptMint);
-
-    toast.add({
-      title: "Successfully Transfered",
-      description: `Transfered success from ${fromNetwork.value.id} to ${toNetwork.value.id}`,
-      color: "green",
-    });
-    fromAddress.value = "";
-    toAddress.value = "";
-    amountS.value = "";
-    isOpen.value = false;
-  } catch (e) {
-    isOpen.value = false;
-    toast.add({
-      title: "Failed",
-      description: `Transfered from failed from ${fromNetwork.value.id} to ${toNetwork.value.id}`,
-      color: "red",
-    });
-    fromAddress.value = "";
-    toAddress.value = "";
-    amountS.value = "";
-    console.log(e);
-  }
-};
 
 const inoToEth = async () => {
   try {
     isOpen.value = true;
     const web3 = new Web3(window.ethereum);
-    const web3Eth = new web3Rpc.web3EthRpc.eth.Contract(ethAbi, ethContract);
-    const web3Ino = new web3.eth.Contract(ethAbi, inoContract);
+    const web3Eth = new web3Rpc.web3EthRpc.eth.Contract(inoaiBridgeABI, ethBridgeAddress);
+    const web3Ino = new web3.eth.Contract(inoaiBridgeABI, inoaiBridgeAddress);
     const senderAddress = fromAddress.value;
     const to = toAddress.value;
-    const amount = amountS.value * 1e18;
+    const amount = amountS.value * 1e8;
     const transaction = await web3Ino.methods
-      .burnTokens(amount)
+      .lockTokens(amount,BigInt(11155111),to)
       .send({ from: senderAddress });
-    console.log("burn transaction", transaction);
-    const nonce = await web3Rpc.web3EthRpc.eth.getTransactionCount(signer);
+      
+      const transactionHash = transaction.transactionHash
+    console.log("burn transaction", transactionHash);
 
-    // Build the transaction object
+
     const gasPrice = await web3Rpc.web3EthRpc.eth.getGasPrice();
-    const gasLimit = 300000; // Adjust the gas limit as needed
-    const data = web3Eth.methods.mintTokens(to, amount).encodeABI();
+    const gasLimit = 300000;
+    const unlockTransaction = web3Eth.methods.unlockTokens(to,amount,transactionHash).encodeABI();
     const transactionObject = {
       from: signer,
-      to: ethContract,
-      nonce: web3.utils.toHex(nonce),
+      to: ethBridgeAddress,
+      // nonce: web3.utils.toHex(nonce),
       gasPrice: web3.utils.toHex(gasPrice),
       gasLimit: web3.utils.toHex(gasLimit),
-      data: data,
+      data: unlockTransaction,
     };
 
     // Sign the transaction
@@ -306,12 +250,12 @@ const inoToEth = async () => {
     const receiptMint = await web3Rpc.web3EthRpc.eth.sendSignedTransaction(
       signedTransaction.rawTransaction
     );
-
+    console.log("unlock transaction", receiptMint)
     // Transaction successful
-    console.log("Transaction successful:", receiptMint);
+  //   console.log("Transaction successful:", receiptMint);
     toast.add({
       title: "Successfully Transfered",
-      description: `Transfered success from ${fromNetwork.value.id} to ${toNetwork.value.id}`,
+      description: `successful`,
       color: "green",
     });
     fromAddress.value = "";
@@ -319,9 +263,10 @@ const inoToEth = async () => {
     amountS.value = "";
     isOpen.value = false;
   } catch (e) {
+      console.log(e)
     toast.add({
       title: "Failed",
-      description: `Transfered from failed from ${fromNetwork.value.id} to ${toNetwork.value.id}`,
+      description: `Transfered from failed from ${e}`,
       color: "red",
     });
     fromAddress.value = "";
@@ -331,140 +276,7 @@ const inoToEth = async () => {
   }
 };
 
-const inoToCronos = async () => {
-  try {
-    isOpen.value = true;
-    const web3 = new Web3(window.ethereum);
-    const web3Cronos = new web3Rpc.web3CronosRpc.eth.Contract(
-      ethAbi,
-      ethContract
-    );
-    const web3Ino = new web3.eth.Contract(ethAbi, inoContract);
-    const senderAddress = fromAddress.value;
-    const to = toAddress.value;
-    const amount = amountS.value * 1e18;
-    const transaction = await web3Ino.methods
-      .burnTokens(amount)
-      .send({ from: senderAddress });
-    console.log("burn transaction", transaction);
 
-    const nonce = await web3Rpc.web3CronosRpc.eth.getTransactionCount(signer);
-
-    // Build the transaction object
-    const gasPrice = await web3Rpc.web3CronosRpc.eth.getGasPrice();
-    const gasLimit = 300000; // Adjust the gas limit as needed
-    const data = web3Cronos.methods.mintTokens(to, amount).encodeABI();
-    const transactionObject = {
-      from: signer,
-      to: cronosContract,
-      nonce: web3.utils.toHex(nonce),
-      gasPrice: web3.utils.toHex(gasPrice),
-      gasLimit: web3.utils.toHex(gasLimit),
-      data: data,
-    };
-
-    // Sign the transaction
-    const signedTransaction =
-      await web3Rpc.web3CronosRpc.eth.accounts.signTransaction(
-        transactionObject,
-        privateKey
-      );
-
-    // Send the signed transaction
-    const receiptMint = await web3Rpc.web3CronosRpc.eth.sendSignedTransaction(
-      signedTransaction.rawTransaction
-    );
-
-    // Transaction successful
-    console.log("Transaction successful:", receiptMint);
-    toast.add({
-      title: "Successfully Transfered",
-      description: `Transfered success from ${fromNetwork.value.id} to ${toNetwork.value.id}`,
-      color: "green",
-    });
-    fromAddress.value = "";
-    toAddress.value = "";
-    amountS.value = "";
-    isOpen.value = false;
-  } catch (e) {
-    toast.add({
-      title: "Failed",
-      description: `Transfered from failed from ${fromNetwork.value.id} to ${toNetwork.value.id}`,
-      color: "red",
-    });
-    fromAddress.value = "";
-    toAddress.value = "";
-    amountS.value = "";
-    isOpen.value = false;
-    console.log("error isOpen", e);
-  }
-};
-
-const cronosToIno = async () => {
-  try {
-    isOpen.value = true;
-    const web3 = new Web3(window.ethereum);
-    const web3Cronos = new web3.eth.Contract(ethAbi, cronosContract);
-    const web3Ino = new web3.eth.Contract(ethAbi, inoContract);
-    const senderAddress = fromAddress.value;
-    const to = toAddress.value;
-    const amount = amountS.value * 1e18;
-    const transaction = await web3Cronos.methods
-      .burnTokens(amount)
-      .send({ from: senderAddress });
-    console.log("burn transaction", transaction);
-
-    const nonce = await web3Rpc.web3InoRpc.eth.getTransactionCount(signer);
-
-    // Build the transaction object
-    const gasPrice = await web3Rpc.web3InoRpc.eth.getGasPrice();
-    const gasLimit = 300000; // Adjust the gas limit as needed
-    const data = web3Ino.methods.mintTokens(to, amount).encodeABI();
-    const transactionObject = {
-      from: signer,
-      to: inoContract,
-      nonce: web3.utils.toHex(nonce),
-      gasPrice: web3.utils.toHex(gasPrice),
-      gasLimit: web3.utils.toHex(gasLimit),
-      data: data,
-    };
-
-    // Sign the transaction
-    const signedTransaction =
-      await web3Rpc.web3InoRpc.eth.accounts.signTransaction(
-        transactionObject,
-        privateKey
-      );
-
-    // Send the signed transaction
-    const receiptMint = await web3Rpc.web3InoRpc.eth.sendSignedTransaction(
-      signedTransaction.rawTransaction
-    );
-
-    // Transaction successful
-    console.log("Transaction successful:", receiptMint);
-    toast.add({
-      title: "Successfully Transfered",
-      description: `Transfered success from ${fromNetwork.value.id} to ${toNetwork.value.id}`,
-      color: "green",
-    });
-
-    fromAddress.value = "";
-    toAddress.value = "";
-    amountS.value = "";
-    isOpen.value = false;
-  } catch (e) {
-    toast.add({
-      title: "Failed",
-      description: `Transfered from failed from ${fromNetwork.value.id} to ${toNetwork.value.id}`,
-      color: "red",
-    });
-    fromAddress.value = "";
-    toAddress.value = "";
-    amountS.value = "";
-    isOpen.value = false;
-  }
-};
 
 async function send() {
   if (fromNetwork.value.id == "eth" && toNetwork.value.id == "ino") {
@@ -507,36 +319,144 @@ async function send() {
   }
 }
 
-const approve = async () => {
-  const web3 = new Web3(window.ethereum);
-  const tokenContract = new web3.eth.Contract(ethTokenAbi, ethToken);
-  const senderAddress = "0xDfb2782396eBb81219e5171c2a43E903EFf7e16A";
-  const amountToApprove = web3.utils.toWei("10000000", "ether");
-  try {
-    const tx = await tokenContract.methods
-      .approve(senderAddress, amountToApprove)
-      .send({ from: window.ethereum.selectedAddress });
-    console.log("Transaction hash:", tx.transactionHash);
-  } catch (error) {
-    console.error("Error approving spending:", error);
-  }
-};
 
-onMounted(async () => {
-  //   const web3 = new Web3(window.ethereum)
-  //   if (typeof (window.ethereum !== undefined)) {
-  //     web3.eth.getChainId().then((chainId) => {
-  //       console.log("connected chainId is ", chainId)
-  //       currentChainId.value = chainId
-  //     })
-  //   }
-  //   else {
-  //     console.log('metamask not detected')
-  //   }
-  //   console.log(fromNetwork.value.id)
-  // await console.log("netwrok is :",switchNetwork)
-  // await switchNetwork('ino')s
-});
+
+
+
+
+
+
+
+
+
+
+// Connect to Ethereum Node (Replace with your provider)
+// const web3 = new Web3('https://your-ethereum-node-url'); 
+
+// // Contract Details
+// const contractAddress = "0xYourContractAddress";
+// const tokenAmount = web3.utils.toWei('10', 'ether'); // Example 10 tokens
+// const destinationChainId = 2;  // Replace with the actual destination chain ID
+// const destinationAddress = "0xReceiverAddressOnOtherChain";
+
+
+// const account = web3.eth.accounts.privateKeyToAccount(privateKey);
+// web3.eth.accounts.wallet.add(account);
+
+// // Contract Instances
+// const bridgeContract = inoaiBridgeAddress;
+// const tokenContract = inoaierc20;
+
+
+// // -----------------------------
+// // 1. Approve Tokens for Locking
+// // -----------------------------
+// async function approveTokens(amount) {
+//     try {
+//         const tx = tokenContract.methods.approve(contractAddress, amount);
+//         const gas = await tx.estimateGas({ from: account.address });
+//         const gasPrice = await web3.eth.getGasPrice();
+
+//         const txData = {
+//             from: account.address,
+//             to: "0xYourTokenAddress",
+//             data: tx.encodeABI(),
+//             gas,
+//             gasPrice
+//         };
+
+//         const signedTx = await web3.eth.accounts.signTransaction(txData, privateKey);
+//         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+//         console.log("✅ Token Approval Successful:", receipt.transactionHash);
+//     } catch (error) {
+//         console.error("❌ Token Approval Failed:", error);
+//     }
+// }
+
+// // -----------------------------
+// // 2. Lock Tokens
+// // -----------------------------
+// async function lockTokens(amount, destinationChainId, destinationAddress) {
+//     try {
+//         const tx = bridgeContract.methods.lockTokens(amount, destinationChainId, destinationAddress);
+//         const gas = await tx.estimateGas({ from: account.address });
+//         const gasPrice = await web3.eth.getGasPrice();
+
+//         const txData = {
+//             from: account.address,
+//             to: contractAddress,
+//             data: tx.encodeABI(),
+//             gas,
+//             gasPrice
+//         };
+
+//         const signedTx = await web3.eth.accounts.signTransaction(txData, privateKey);
+//         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+//         console.log("✅ Tokens Locked! Transaction Hash:", receipt.transactionHash);
+//     } catch (error) {
+//         console.error("❌ Lock Tokens Failed:", error);
+//     }
+// }
+
+// // -----------------------------
+// // 3. Listen for TokensLocked Event
+// // -----------------------------
+// function listenForTokensLocked() {
+//     bridgeContract.events.TokensLocked({
+//         fromBlock: 'latest'
+//     })
+//     .on('data', (event) => {
+//         console.log("📩 Tokens Locked Event Detected:", event.returnValues);
+//     })
+//     .on('error', console.error);
+// }
+
+// // -----------------------------
+// // 4. Unlock Tokens (Admin Only)
+// // -----------------------------
+// async function unlockTokens(user, amount, txHash) {
+//     try {
+//         const tx = bridgeContract.methods.unlockTokens(user, amount, txHash);
+//         const gas = await tx.estimateGas({ from: account.address });
+//         const gasPrice = await web3.eth.getGasPrice();
+
+//         const txData = {
+//             from: account.address,
+//             to: contractAddress,
+//             data: tx.encodeABI(),
+//             gas,
+//             gasPrice
+//         };
+
+//         const signedTx = await web3.eth.accounts.signTransaction(txData, privateKey);
+//         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+//         console.log("✅ Tokens Unlocked! Transaction Hash:", receipt.transactionHash);
+//     } catch (error) {
+//         console.error("❌ Unlock Tokens Failed:", error);
+//     }
+// }
+
+// // -----------------------------
+// // Call the Lock Tokens Flow
+// // -----------------------------
+// async function bridgeFlow() {
+//     const amount = tokenAmount;
+//     await approveTokens(amount);
+//     await lockTokens(amount, destinationChainId, destinationAddress);
+//     listenForTokensLocked();
+// }
+
+// // Execute the bridge flow
+// bridgeFlow();
+
+
+
+
+
+
+
+
+
 </script>
 
 <style>
@@ -551,9 +471,9 @@ body {
   font-family: "DM Sans", sans-serif;
   font-size: 16px;
   font-weight: 400;
-  background: #101114;
-  color: #ffffff;
-  background-color: #101114 !important;
+background: radial-gradient(at center, #FB8E00, #FFFFFF);
+  color: #37393B;
+  /* background-color: #101114 !important; */
 }
 
 .height-inp {
@@ -561,10 +481,10 @@ body {
 }
 
 .boxShadow {
-  box-shadow: -2px 0px 9px 0px rgba(135 ,142 ,153 ,0.75);
--webkit-box-shadow: -2px 0px 9px 0px rgba(135, 142, 153 ,0.75);
--moz-box-shadow: -2px 0px 9px 0px rgba(135 ,142 ,153 ,0.75); 
-  box-shadow: 0px 0px 3px 0px rgba(135, 142, 153, 0.75);
+  box-shadow: -2px 0px 0px 0px rgba(135 ,142 ,153 ,0.75);
+-webkit-box-shadow: -2px 0px 0px 0px rgba(135, 142, 153 ,0.75);
+-moz-box-shadow: -2px 0px 0px 0px rgba(135 ,142 ,153 ,0.75); 
+  box-shadow: 0px 0px 0px 0px rgba(135, 142, 153, 0.75);
   -webkit-box-shadow: 0px 0px 3px 0px rgba(135, 142, 153, 0.75);
   -moz-box-shadow: 0px 0px 3px 0px rgba(135, 142, 153, 0.75);
   border-radius: 6px;
@@ -599,3 +519,8 @@ transition: box-shadow 0.2s ease-in-out;
 
 
 </style>
+
+
+
+
+
