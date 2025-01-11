@@ -1,0 +1,9 @@
+step 1) 
+   - first we ll create a smart contract which will distribute the transaction fee to 182 wallet.
+   - then we will deposit some funds in that smart contract which will be used as the transaction fee to distribute to 182 wallet address.
+   - we will keep track or record of the transaction that happens in the chain and from there we will get the trasnaction fee amount that was used for the transaction
+
+step 2) 
+    - we will get the transaction fee amount  from the track or record of transaction we kept 
+    - after that we will split the transaction fee amount to 182 wallet address like we discuss
+    - then finally we will distribute splitted transaction fee amount automatically from the funds that we deposited in the contract  when transaction happens to each wallet i.e. 182 wallets 4

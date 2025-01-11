@@ -1,0 +1,106 @@
+To store Docker data, including images, containers, and volumes, on the /dev/sdb1 partition (mounted at /mnt), you can follow these steps:
+
+Stop Docker Service: First, stop the Docker service to prevent any interference with the data migration process:
+
+bash
+Copy code
+sudo systemctl stop docker
+Move Docker Data to /mnt: Copy the existing Docker data to the /mnt directory:
+
+bash
+Copy code
+sudo rsync -aP /var/lib/docker /mnt/
+This command copies all the data from the current Docker data directory (/var/lib/docker) to the /mnt directory. The -a option preserves file permissions, ownership, timestamps, etc., and the -P option shows the progress during the copy operation.
+
+Backup and Remove Original Docker Data: It's a good practice to backup the original Docker data and then remove it to free up space:
+
+bash
+Copy code
+sudo mv /var/lib/docker /var/lib/docker_backup
+This command moves the original Docker data directory to /var/lib/docker_backup.
+
+Create a Symbolic Link: Now, create a symbolic link from the /mnt/docker directory to /var/lib/docker, so that Docker can find its data in the new location:
+
+bash
+Copy code
+sudo ln -s /mnt/docker /var/lib/docker
+
+
+Start Docker Service: Finally, start the Docker service to apply the changes:
+
+bash
+Copy code
+sudo systemctl start docker
+
+
+
+86cf7e92a5a70f2c6d040a47bef4a5d3.pfx
+
+
+
+
+
+
+
+
+
+
+
+
+
+<script setup>
+import web3Rpc from '../composables/web3';
+
+const web3 = web3Rpc.web3InoRpc
+
+// Replace with your own values
+
+onMounted(async()=>{
+  const privateKey = 'ac23cdfb7cdd37094422117950d8024f63912a3380af80cc427e99e4926b14ec';
+
+// Replace with the address you want to send the transaction from and to
+const fromAddress = '0x66C22B13f01946299793fe30eA7e9E507C0C80Aa';
+
+// The nonce of the pending transaction you want to replace
+const nonce = 6;
+
+  try {
+        // Get the current gas price
+        const gasPrice = await web3.eth.getGasPrice();
+        const higherGasPrice = BigInt(gasPrice) + BigInt(1000000000); // Add 1 gwei
+
+        // Create a new transaction
+        const tx = {
+            from: fromAddress,
+            to: fromAddress, // Sending to the same address
+            value: '0x0', // Send 0 ETH
+            gas: 21000,
+            gasPrice: higherGasPrice.toString(),
+            nonce: nonce,
+            chainId: 1 // Mainnet chain ID
+        };
+
+        // Sign the transaction
+        const signedTx = await web3.eth.accounts.signTransaction(tx, privateKey);
+
+        // Send the transaction
+        const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
+
+        console.log('Transaction receipt:', receipt);
+    } catch (error) {
+        console.error('Error replacing transaction:', error);
+    }
+})
+
+
+</script>
+
+<template>
+<div>
+  <button @click="switchNetwork('eth')">change network</button>
+</div>
+
+</template>
+
+
+

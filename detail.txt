@@ -1,0 +1,85 @@
+starting backend service:
+- cd root/blockscout/docker-compose
+- sh start.sh
+
+stopping backend service:
+- cd root/blockscout/docker-compose
+- docker compose down
+
+starting frontend service:
+- cd root/frontend
+- docker run -p 3000:3000 --env-file /root/frontend/config/envs/.env.dev blockscout-frontend:local
+
+stopping frontend service:
+- docker stop blockscout-frontend:local
+
+
+after making any changes to frontend code you need to build the docker image. for this you follow below step:
+- cd root/frontend
+- yarn build:docker
+
+
+
+and then you need to run that docker image uisng below command
+- docker run -p 3000:3000 --env-file /root/frontend/config/envs/.env.dev blockscout-frontend:local
+
+
+
+for domain setup you need to change the files in the below directory:
+- cd root/blockscout/docker-compose/proxy/default.conf.templates
+- cd root/blockscout/docker-compose/services/nginx.yml
+
+after you make changes you need to stop and start the backend services using above command you ll find in top of this file.
+i ll send the demo config file for both default.conf.templates and nginx.yml
+
+after this you need to make changes in frontend env file which is in below directory:
+- cd root/frontend/configs/envs/.env.dev
+
+below will be frontend config after you setup the domain:
+
+
+
+
+# Set of ENVs for local network explorer 
+# frontend app URL - https://localhost:3000/ 
+# API URL - https://localhost:3001/ 
+ 
+# app configuration 
+NEXT_PUBLIC_APP_PROTOCOL=https
+NEXT_PUBLIC_APP_HOST=cryptoxscan.io
+NEXT_PUBLIC_APP_PORT=3000
+ 
+# blockchain parameters 
+NEXT_PUBLIC_NETWORK_NAME=CryptoX
+NEXT_PUBLIC_NETWORK_SHORT_NAME=XCOIN 
+NEXT_PUBLIC_NETWORK_ID=158245
+NEXT_PUBLIC_NETWORK_CURRENCY_NAME=XCOIN
+NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL=XCOIN
+NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS=18 
+#NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE=validation
+NEXT_PUBLIC_NETWORK_RPC_URL=https://rpc-xcoin.cryptoxnetwork.io/
+ 
+NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID=c38e6a824154f440e1ebf286932fccb1
+ 
+# api configuration 
+NEXT_PUBLIC_API_BASE_PATH=/
+NEXT_PUBLIC_API_HOST=cryptoxscan.io
+NEXT_PUBLIC_API_PROTOCOL=https
+NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL=wss
+NEXT_PUBLIC_HOMEPAGE_CHARTS=['daily_txs','coin_price','market_cap'] 
+ 
+# app features 
+#NEXT_PUBLIC_APP_ENV=development
+NEXT_PUBLIC_STATS_API_HOST=https://stat.cryptoxscan.io:8080
+NEXT_PUBLIC_VISUALIZE_API_HOST=https://visualizer.cryptoxscan.io:8081
+#NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR="linear-gradient(145deg, #00FFFF, #0000FF, #FF00FF, #FFFF00, #00FF00, #FF0000, #00FFFF);"
+NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND=#e8BD71
+NEXT_PUBLIC_NETWORK_LOGO=http://173.199.126.36/logo/cryptox.png
+NEXT_PUBLIC_NETWORK_LOGO_DARK=http://173.199.126.36/logo/cryptox.png
+NEXT_PUBLIC_NETWORK_ICON=http://173.199.126.36/logo/coin.png
+NEXT_PUBLIC_NETWORK_ICON_DARK=http://173.199.126.36/logo/coin.png
+ 
+NEXT_PUBLIC_AD_BANNER_PROVIDER=none
+NEXT_PUBLIC_AD_TEXT_PROVIDER=none
+FAVICON_GENERATOR_API_KEY=026aeec524febe67f95266bc658ed6ceabce7233
+FAVICON_MASTER_URL=http://173.199.126.36/logo/coin.png

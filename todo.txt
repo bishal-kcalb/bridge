@@ -1,0 +1,23 @@
+-add the ino nework in chainlist for logo and coin name 
+-replace the logo in swap
+-put domain name for swap 
+-crosschain to cronos
+-update ui for crosschain
+-security check for crosschain(need to do more research and testing)
+
+
+
+
+
+Domains to Validate
+inoswap.org PRIMARY DOMAIN
+
+bridge.inoswap.org
+
+Host
+_BCF8393DE72BAC6ABE016841708366CE.inoswap.org
+
+_BCF8393DE72BAC6ABE016841708366CE.bridge.inoswap.org
+
+Target
+90CF30C97665B57A324F52A88EE0A85A.12F20BE716B6BDD8473FEDE12758A7F6.6646fca639e60.comodoca.com

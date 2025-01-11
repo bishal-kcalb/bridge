@@ -1,0 +1,51 @@
+# Set of ENVs for local network explorer
+# frontend app URL - https://localhost:3000/
+# API URL - https://localhost:3001/
+
+# app configuration
+NEXT_PUBLIC_APP_PROTOCOL=http
+NEXT_PUBLIC_APP_HOST=localhost
+NEXT_PUBLIC_APP_PORT=3000
+
+# blockchain parameters
+NEXT_PUBLIC_NETWORK_NAME=Aigisos Blockchain
+NEXT_PUBLIC_NETWORK_SHORT_NAME=Aigisos
+NEXT_PUBLIC_NETWORK_ID=334
+NEXT_PUBLIC_NETWORK_CURRENCY_NAME=AIG
+NEXT_PUBLIC_NETWORK_CURRENCY_SYMBOL=AIG
+NEXT_PUBLIC_NETWORK_CURRENCY_DECIMALS=18
+NEXT_PUBLIC_NETWORK_VERIFICATION_TYPE=validation
+NEXT_PUBLIC_NETWORK_RPC_URL=http://4.227.184.182:8545
+
+
+
+# api configuration
+NEXT_PUBLIC_API_BASE_PATH=/
+NEXT_PUBLIC_API_HOST=localhost
+NEXT_PUBLIC_API_PROTOCOL=http
+NEXT_PUBLIC_API_WEBSOCKET_PROTOCOL=ws
+NEXT_PUBLIC_HOMEPAGE_CHARTS=['daily_txs','coin_price','market_cap']
+
+# app features
+NEXT_PUBLIC_APP_ENV=development
+NEXT_PUBLIC_STATS_API_HOST=localhost:8080
+NEXT_PUBLIC_VISUALIZE_API_HOST=localhost:8081
+#NEXT_PUBLIC_HOMEPAGE_PLATE_TEXT_COLOR="linear-gradient(145deg, #00FFFF, #0000FF, #FF00FF, #FFFF00, #00FF00, #FF0000, #00FFFF);"
+NEXT_PUBLIC_HOMEPAGE_PLATE_BACKGROUND=""
+NEXT_PUBLIC_NETWORK_LOGO='https://scan.siriusnet.io/images/white.png'
+NEXT_PUBLIC_NETWORK_LOGO_DARK='https://scan.siriusnet.io/images/150.png'
+NEXT_PUBLIC_NETWORK_ICON='https://scan.siriusnet.io/images/icon.png'
+NEXT_PUBLIC_NETWORK_ICON_DARK='https://scan.siriusnet.io/images/icon.png'
+
+NEXT_PUBLIC_AD_BANNER_PROVIDER=null
+NEXT_PUBLIC_AD_TEXT_PROVIDER=null
+
+
+
+
+chainId=158245
+rpc=https://rpc-xcoin.cryptoxnetwork.io/
+
+Website Name = CryptoX Explorer
+Coin name = XCOIN
+symbol = XCOIN

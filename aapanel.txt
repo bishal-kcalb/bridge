@@ -1,0 +1,122 @@
+Inoai:
+aaPanel Internet Address: https://203.161.32.166:10248/fc488798
+aaPanel Internal Address: https://203.161.32.166:10248/fc488798
+username: 0taglusv
+password: d481554f
+
+
+geth --networkid 88559 --datadir ./data --bootnodes enode://555a887c30bbd1a02eb62a675122d4544145e80a6349cb4d54f64ff5aa2aae126e3303d1ea9286c9fc4c1cb81a857f894634fccdb1404f070907bc401c4af57b@127.0.0.1:0?discport=30301 --port 30302 --ipcpath ./ipcnode1 --unlock 0x66C22B13f01946299793fe30eA7e9E507C0C80Aa --password data/password.txt --mine --miner.etherbase 0x66C22B13f01946299793fe30eA7e9E507C0C80Aa --http --http.addr 0.0.0.0 --allow-insecure-unlock --http.port 8545 --http.api admin,eth,miner,net,txpool,personal,web3 --syncmode full --gcmode archive --ws --ws.addr 0.0.0.0 --ws.port 8552 --http.vhosts * --http.corsdomain * --ws.api eth,net,web3
+
+
+
+
+aaPanel Internet Address: https://91.229.245.40:37218/db72c801
+aaPanel Internal Address: https://91.229.245.40:37218/db72c801
+username: uaene8ie
+password: ff6c4af8
+
+
+
+==================================================================
+aaPanel Internet Address: https://62.169.17.148:14798/663fccb8
+aaPanel Internal Address: https://62.169.17.148:14798/663fccb8
+username: o3fw9k8r
+password: bb785d31
+Warning:
+
+
+
+
+
+
+
+
+
+
+server {
+    listen 443 ssl;
+    server_name bridge.inoswap.org www.bridge.inoswap.org;
+
+    ssl_certificate /etc/nginx/ssl_inoswap/certificate.crt;
+    ssl_certificate_key /etc/nginx/ssl_inoswap/inoswap_org.key;
+
+    location / {
+        proxy_pass http://203.161.32.166:9000;
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+        add_header 'Access-Control-Allow-Credentials' 'true';
+    }
+}
+
+server {
+    listen 443 ssl;
+    server_name inoswap.org;
+
+    ssl_certificate /etc/nginx/ssl_inoswap/certificate.crt;
+    ssl_certificate_key /etc/nginx/ssl_inoswap/inoswap_org.key;
+
+    location / {
+        proxy_pass http://203.161.32.166:9000;
+        add_header 'Access-Control-Allow-Origin' '*';
+        add_header 'Access-Control-Allow-Methods' 'GET, POST, OPTIONS';
+        add_header 'Access-Control-Allow-Headers' 'DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range';
+        add_header 'Access-Control-Allow-Credentials' 'true';
+    }
+}
+
+
+
+
+==================================================================
+aaPanel Internet Address: https://20.215.224.235:12105/49748bbf
+aaPanel Internal Address: https://10.0.0.4:12105/49748bbf
+username: wxpgzguk
+password: 9e301ec7
+
+
+
+
+schmille:
+
+==================================================================
+aaPanel Internet Address: https://20.118.217.38:39021/39d04c65
+aaPanel Internal Address: https://10.30.0.4:39021/39d04c65
+username: gvqu8xkt
+password: d5fc6034
+
+Server IP: 20.118.217.38
+Username: AigisosBlockExplorer
+Password: Aigisos!@#Block!@#Explorer!@#$H*&**()$
+
+
+
+
+
+
+aaPanel Internet Address: https://38.242.133.122:20179/2797c916
+aaPanel Internal Address: https://38.242.133.122:20179/2797c916
+username: 4c7gwilb
+password: 1a957976
+
+
+Certificate is saved at: /etc/letsencrypt/live/scan.oho.ai/fullchain.pem
+Key is saved at:         /etc/letsencrypt/live/scan.oho.ai/privkey.pem
+
+
+pondak:
+aaPanel Internet Address: https://38.242.133.122:20179/2797c916
+aaPanel Internal Address: https://38.242.133.122:20179/2797c916
+username: 4c7gwilb
+password: c1a9b13a
+
+
+
+masood:
+aaPanel Internet Address: https://[2001:19f0:c:ad9:5400:5ff:fe10:e707]:30688/c18ceef4
+aaPanel Internal Address: https://173.199.126.36:30688/c18ceef4
+username: 9scszhpg
+password: 9ca17a33
+Warning:
+If you cannot access the panel, 
+release the following port (30688|888|80|443|20|21) in the security group

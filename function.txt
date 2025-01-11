@@ -1,0 +1,49 @@
+<?php
+add_action('wp_enqueue_scripts', 'inbio_child_enqueue_styles', 20);
+function inbio_child_enqueue_styles() {
+    wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
+    if ( is_rtl() ) {
+        wp_enqueue_style( 'parent-rtl', get_template_directory_uri() . '/style-rtl.css');
+    }
+     wp_enqueue_style('inbio-child-style', get_stylesheet_uri() );
+
+}
+
+
+// Remove Archive Title Prefix
+add_filter( 'get_the_archive_title_prefix', '__return_empty_string' );
+
+
+
+
+
+
+<?php
+add_action('wp_enqueue_scripts', 'inbio_child_enqueue_styles', 20);
+function inbio_child_enqueue_styles() {
+    wp_enqueue_style('parent-style', get_template_directory_uri() . '/style.css');
+    if ( is_rtl() ) {
+        wp_enqueue_style( 'parent-rtl', get_template_directory_uri() . '/style-rtl.css');
+    }
+     wp_enqueue_style('inbio-child-style', get_stylesheet_uri() );
+
+}
+
+
+// Remove Archive Title Prefix
+add_filter( 'get_the_archive_title_prefix', '__return_empty_string' );
+
+
+function my_nuxt_app_shortcode() {
+    // Fetch the Nuxt 3 app content using a server-side proxy
+    $nuxt_app_content = wp_remote_get('https://kcanther.org/output/');
+
+    if ( ! is_wp_error( $nuxt_app_content ) ) {
+        $nuxt_app_html = wp_remote_retrieve_body( $nuxt_app_content );
+
+        return $nuxt_app_html;
+    } else {
+        return '<p>Error fetching Nuxt 3 app content.</p>';
+    }
+}
+add_shortcode('my_nuxt_app', 'my_nuxt_app_shortcode');
