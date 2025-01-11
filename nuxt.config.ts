@@ -13,6 +13,7 @@ export default defineNuxtConfig({
   },
 
   app: {
+    baseURL:"/bridge/",
     head: {
       charset: 'utf-8',
       viewport: 'width=device-width, initial-scale=1',
