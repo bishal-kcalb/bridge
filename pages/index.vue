@@ -3,12 +3,12 @@
 
     <div class="flex justify-center items-center">
       <div
-        class="flex flex-col gap-3 boxShadow w-[100%] sm:w-[35rem]"
+        class="flex flex-col gap-3 boxShadowl w-[100%] sm:w-[35rem]"
         style="
           margin: 2rem 0;
           /* width: 35rem; */
           padding: 3rem 3rem;
-          background: #f4f2f1;
+          background: #e8e8e8;;
           border-radius: 10px;
         "
       >
@@ -17,18 +17,18 @@
   
         <div class="flex gap-3 justify-center items-end">
           <div class="sm:col-span-3" style="width: 100%">
-            <label
+            <!-- <label
               for="first-name"
               class="block text-sm font-medium leading-6 text-[#37393B]"
               >From</label
-            >
+            > -->
             <div class="">
               <input
                 v-model="fromAddress"
                 type="text"
                 autocomplete="given-name"
-                class="boxShadow block w-full rounded-md  py-1.5 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 input-own"
-                placeholder="from address"
+                class="!text-[#37393B] boxShadow block w-full rounded-md  py-1.5 text-gray-900 placeholder:text-gray-400 sm:text-sm sm:leading-6 input-own"
+                placeholder="From address"
               />
             </div>
           </div>
@@ -37,7 +37,7 @@
             <!-- <label for="country" class="block text-sm font-medium leading-6"
               >Network</label
             > -->
-            <div class="mt-2 boxShadow">
+            <div class="mt-2 boxShadow h-[3.5rem] flex justify-center items-center">
               <USelectMenu v-model="fromNetwork" :options="chains"  size='md' variant="none">
                 <template #leading > 
   
@@ -59,17 +59,17 @@
         </div>
         <div class="flex gap-3 justify-center items-end ">
           <div class="sm:col-span-3" style="width: 100%">
-            <label
+            <!-- <label
               for="first-name"
               class="block text-sm font-medium leading-6 text-[#37393B]"
               >To</label
-            >
+            > -->
             <div class="mt-2">
               <input
                 v-model="toAddress"
                 type="text"
-                class="boxShadow block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 input-own"
-                placeholder="to address"
+                class="text-[#37393B] boxShadow block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 input-own"
+                placeholder="To address"
               />
             </div>
           </div>
@@ -78,7 +78,7 @@
             <!-- <label for="country" class="block text-sm font-medium leading-6"
               >Network</label
             > -->
-            <div class="mt-2 boxShadow">
+            <div class="mt-2 boxShadow h-[3.5rem] flex justify-center items-center">
               <USelectMenu v-model="toNetwork" :options="chains" size='md' variant="none">
                 <template #leading>
                   <UIcon
@@ -98,18 +98,18 @@
         </div>
         <div class="flex justify-center">
           <div class="sm:col-span-3" style="width: 100%">
-            <label
+            <!-- <label
               for="first-name"
               class="block text-sm font-medium leading-6 text-[#37393B]"
               >Amount</label
-            >
+            > -->
             <div class="mt-2">
               <input
                 v-model="amountS"
                 type="text"
                 autocomplete="given-name"
-                class="boxShadow block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 input-own"
-                placeholder="amount"
+                class="text-[#37393B] boxShadow block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm placeholder:text-gray-400 sm:text-sm sm:leading-6 input-own"
+                placeholder="Amount"
               />
             </div>
           </div>
@@ -118,12 +118,13 @@
         <!-- <button @click="send" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Send
         </button> -->
-        <button
+        <!-- <button
           @click="send"
-          class="inline-flex text-[#f4f2f1] items-center justify-center w-[100%] whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 bg-[#2A85F3] hover:bg-[#FB8D00]"
+          class="btnShadow inline-flex text-[#f4f2f1] items-center justify-center w-[100%] whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 bg-[#2A85F3] hover:bg-[#FB8D00]"
         >
           Send
-        </button>
+        </button> -->
+        <button @click = "send" class="button2"> Send</button>
       </div>
       <UModal v-model="isOpen" prevent-close>
         <button
@@ -462,16 +463,19 @@ async function send() {
 <style>
 .input-own {
   background: transparent;
-  color: white !important;
+  color: #37393B !important;
   /* border: 1px solid #40a2d8; */
   padding-left: 0.5rem;
+  height: 3.5rem;
+  padding-left: 1.5rem;
+
 }
 
 body {
   font-family: "DM Sans", sans-serif;
   font-size: 16px;
   font-weight: 400;
-background: radial-gradient(at center, #FB8E00, #FFFFFF);
+background-image: url('../assets/logo/dune-top-xitcoin.png');
   color: #37393B;
   /* background-color: #101114 !important; */
 }
@@ -481,12 +485,12 @@ background: radial-gradient(at center, #FB8E00, #FFFFFF);
 }
 
 .boxShadow {
-  box-shadow: -2px 0px 0px 0px rgba(135 ,142 ,153 ,0.75);
--webkit-box-shadow: -2px 0px 0px 0px rgba(135, 142, 153 ,0.75);
--moz-box-shadow: -2px 0px 0px 0px rgba(135 ,142 ,153 ,0.75); 
-  box-shadow: 0px 0px 0px 0px rgba(135, 142, 153, 0.75);
-  -webkit-box-shadow: 0px 0px 3px 0px rgba(135, 142, 153, 0.75);
-  -moz-box-shadow: 0px 0px 3px 0px rgba(135, 142, 153, 0.75);
+  box-shadow:inset 6px 6px 12px #c5c5c5,inset -6px -6px 12px #ffffff;
+  border-radius: 6px;
+} 
+
+.boxShadowl {
+  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
   border-radius: 6px;
 } 
 
@@ -515,6 +519,82 @@ background: radial-gradient(at center, #FB8E00, #FFFFFF);
 -webkit-box-shadow: 0px 1px 33px -13px rgba(226,61,247,1);
 -moz-box-shadow: 0px 1px 33px -13px rgba(226,61,247,1);
 transition: box-shadow 0.2s ease-in-out;
+}
+
+.btnShadow{
+  box-shadow: 6px 6px 12px #c5c5c5, -6px -6px 12px #ffffff;
+  border-radius: 6px;
+}
+
+
+/* From Uiverse.io by shah1345 */ 
+.button2 {
+  margin-top: 2rem;
+  display: inline-block;
+  transition: all 0.2s ease-in;
+  position: relative;
+  overflow: hidden;
+  z-index: 1;
+  color: #FB8D00;
+  padding: 0.7em 1.7em;
+  cursor: pointer;
+  font-size: 18px;
+  border-radius: 0.5em;
+  background: #e8e8e8;
+  border: 1px solid #e8e8e8;
+  box-shadow:inset 6px 6px 12px #c5c5c5,inset -6px -6px 12px #ffffff;
+}
+
+.button2:active {
+  color: #666;
+  box-shadow: inset 4px 4px 12px #c5c5c5, inset -4px -4px 12px #ffffff;
+}
+
+.button2:before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.25);
+  top: 100%;
+  width: 140%;
+  height: 180%;
+  background-color: rgba(0, 0, 0, 0.05);
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.button2:after {
+  content: "";
+  position: absolute;
+  left: 55%;
+  transform: translateX(-50%) scaleY(1) scaleX(1.45);
+  top: 180%;
+  width: 160%;
+  height: 190%;
+  background-color: #FB8D00;
+  border-radius: 50%;
+  display: block;
+  transition: all 0.5s 0.1s cubic-bezier(0.55, 0, 0.1, 1);
+  z-index: -1;
+}
+
+.button2:hover {
+  color: #ffffff;
+  border: 1px solid #FB8D00;
+}
+
+.button2:hover:before {
+  top: -35%;
+  background-color: #FB8D00;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
+}
+
+.button2:hover:after {
+  top: -45%;
+  background-color: #FB8D00;
+  transform: translateX(-50%) scaleY(1.3) scaleX(0.8);
 }
 
 
