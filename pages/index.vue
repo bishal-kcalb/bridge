@@ -8,7 +8,7 @@
           margin: 2rem 0;
           /* width: 35rem; */
           padding: 3rem 3rem;
-          background: #e8e8e8;;
+          background: #E8E8ED;
           border-radius: 10px;
         "
       >
@@ -37,7 +37,7 @@
             <!-- <label for="country" class="block text-sm font-medium leading-6"
               >Network</label
             > -->
-            <div class="mt-2 boxShadow h-[3.5rem] flex justify-center items-center">
+            <div class="mt-2 boxShadowl h-[3.5rem] flex justify-center items-center bg-white">
               <USelectMenu v-model="fromNetwork" :options="chains"  size='md' variant="none">
                 <template #leading > 
   
@@ -78,7 +78,7 @@
             <!-- <label for="country" class="block text-sm font-medium leading-6"
               >Network</label
             > -->
-            <div class="mt-2 boxShadow h-[3.5rem] flex justify-center items-center">
+            <div class="mt-2 boxShadowl h-[3.5rem] flex justify-center items-center bg-white">
               <USelectMenu v-model="toNetwork" :options="chains" size='md' variant="none">
                 <template #leading>
                   <UIcon
@@ -118,13 +118,13 @@
         <!-- <button @click="send" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded">
           Send
         </button> -->
-        <!-- <button
+        <button
           @click="send"
-          class="btnShadow inline-flex text-[#f4f2f1] items-center justify-center w-[100%] whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 bg-[#2A85F3] hover:bg-[#FB8D00]"
+          class="btnShadow mt-[1.5rem] h-[3.5rem] inline-flex text-[#f4f2f1] items-center justify-center w-[100%] whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-10 px-4 py-2 bg-[#FB8D00] hover:bg-[#2A85F3]"
         >
           Send
-        </button> -->
-        <button @click = "send" class="button2"> Send</button>
+        </button>
+        <!-- <button @click = "send" class="button2"> Send</button> -->
       </div>
       <UModal v-model="isOpen" prevent-close>
         <button
@@ -162,6 +162,7 @@ import {
   ethBridgeAddress,
   inoaiBridgeAddress,
   inoaiBridgeABI,
+  polygonBridgeAddress,
   inoaierc20,
   etherc20
 } from "../constants/contract-addresses";
@@ -228,7 +229,75 @@ const inoToEth = async () => {
     console.log("burn transaction", transactionHash);
 
 
-    const gasPrice = await web3Rpc.web3EthRpc.eth.getGasPrice();
+    // const gasPrice = await web3Rpc.web3EthRpc.eth.getGasPrice();
+    // const gasLimit = 300000;
+    // const unlockTransaction = web3Eth.methods.unlockTokens(to,amount,transactionHash).encodeABI();
+    // const transactionObject = {
+    //   from: signer,
+    //   to: ethBridgeAddress,
+    //   // nonce: web3.utils.toHex(nonce),
+    //   gasPrice: web3.utils.toHex(gasPrice),
+    //   gasLimit: web3.utils.toHex(gasLimit),
+    //   data: unlockTransaction,
+    // };
+
+    // // Sign the transaction
+    // const signedTransaction =
+    //   await web3Rpc.web3EthRpc.eth.accounts.signTransaction(
+    //     transactionObject,
+    //     privateKey
+    //   );
+
+    // // Send the signed transaction
+    // const receiptMint = await web3Rpc.web3EthRpc.eth.sendSignedTransaction(
+    //   signedTransaction.rawTransaction
+    // );
+    // console.log("unlock transaction", receiptMint)
+    // Transaction successful
+  //   console.log("Transaction successful:", receiptMint);
+    toast.add({
+      title: "Successfully Transfered",
+      description: `successful`,
+      color: "green",
+    });
+    fromAddress.value = "";
+    toAddress.value = "";
+    amountS.value = "";
+    isOpen.value = false;
+  } catch (e) {
+      console.log(e)
+    toast.add({
+      title: "Failed",
+      description: `Transfered from failed from ${e}`,
+      color: "red",
+    });
+    fromAddress.value = "";
+    toAddress.value = "";
+    amountS.value = "";
+    isOpen.value = false;
+  }
+};
+
+
+// ino to polygon
+const inoToCronos = async () =>{
+  try {
+    isOpen.value = true;
+    const web3 = new Web3(window.ethereum);
+    const web3Polygon = new web3Rpc.web3PolygonRpc.eth.Contract(inoaiBridgeABI, polygonBridgeAddress);
+    const web3Ino = new web3.eth.Contract(inoaiBridgeABI, inoaiBridgeAddress);
+    const senderAddress = fromAddress.value;
+    const to = toAddress.value;
+    const amount = amountS.value * 1e8;
+    const transaction = await web3Ino.methods
+      .lockTokens(amount,BigInt(11155111),to)
+      .send({ from: senderAddress });
+      
+      const transactionHash = transaction.transactionHash
+    console.log("burn transaction", transactionHash);
+
+
+    const gasPrice = await web3Rpc.web3PolygonRpc.eth.getGasPrice();
     const gasLimit = 300000;
     const unlockTransaction = web3Eth.methods.unlockTokens(to,amount,transactionHash).encodeABI();
     const transactionObject = {
@@ -242,13 +311,13 @@ const inoToEth = async () => {
 
     // Sign the transaction
     const signedTransaction =
-      await web3Rpc.web3EthRpc.eth.accounts.signTransaction(
+      await web3Rpc.web3PolygonRpc.eth.accounts.signTransaction(
         transactionObject,
         privateKey
       );
 
     // Send the signed transaction
-    const receiptMint = await web3Rpc.web3EthRpc.eth.sendSignedTransaction(
+    const receiptMint = await web3Rpc.web3PolygonRpc.eth.sendSignedTransaction(
       signedTransaction.rawTransaction
     );
     console.log("unlock transaction", receiptMint)
@@ -275,8 +344,7 @@ const inoToEth = async () => {
     amountS.value = "";
     isOpen.value = false;
   }
-};
-
+}
 
 
 async function send() {
@@ -324,31 +392,6 @@ async function send() {
 
 
 
-
-
-
-
-
-
-
-// Connect to Ethereum Node (Replace with your provider)
-// const web3 = new Web3('https://your-ethereum-node-url'); 
-
-// // Contract Details
-// const contractAddress = "0xYourContractAddress";
-// const tokenAmount = web3.utils.toWei('10', 'ether'); // Example 10 tokens
-// const destinationChainId = 2;  // Replace with the actual destination chain ID
-// const destinationAddress = "0xReceiverAddressOnOtherChain";
-
-
-// const account = web3.eth.accounts.privateKeyToAccount(privateKey);
-// web3.eth.accounts.wallet.add(account);
-
-// // Contract Instances
-// const bridgeContract = inoaiBridgeAddress;
-// const tokenContract = inoaierc20;
-
-
 // // -----------------------------
 // // 1. Approve Tokens for Locking
 // // -----------------------------
@@ -368,87 +411,12 @@ async function send() {
 
 //         const signedTx = await web3.eth.accounts.signTransaction(txData, privateKey);
 //         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-//         console.log("✅ Token Approval Successful:", receipt.transactionHash);
+//         console.log("Token Approval Successful:", receipt.transactionHash);
 //     } catch (error) {
-//         console.error("❌ Token Approval Failed:", error);
+//         console.error("Token Approval Failed:", error);
 //     }
 // }
 
-// // -----------------------------
-// // 2. Lock Tokens
-// // -----------------------------
-// async function lockTokens(amount, destinationChainId, destinationAddress) {
-//     try {
-//         const tx = bridgeContract.methods.lockTokens(amount, destinationChainId, destinationAddress);
-//         const gas = await tx.estimateGas({ from: account.address });
-//         const gasPrice = await web3.eth.getGasPrice();
-
-//         const txData = {
-//             from: account.address,
-//             to: contractAddress,
-//             data: tx.encodeABI(),
-//             gas,
-//             gasPrice
-//         };
-
-//         const signedTx = await web3.eth.accounts.signTransaction(txData, privateKey);
-//         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-//         console.log("✅ Tokens Locked! Transaction Hash:", receipt.transactionHash);
-//     } catch (error) {
-//         console.error("❌ Lock Tokens Failed:", error);
-//     }
-// }
-
-// // -----------------------------
-// // 3. Listen for TokensLocked Event
-// // -----------------------------
-// function listenForTokensLocked() {
-//     bridgeContract.events.TokensLocked({
-//         fromBlock: 'latest'
-//     })
-//     .on('data', (event) => {
-//         console.log("📩 Tokens Locked Event Detected:", event.returnValues);
-//     })
-//     .on('error', console.error);
-// }
-
-// // -----------------------------
-// // 4. Unlock Tokens (Admin Only)
-// // -----------------------------
-// async function unlockTokens(user, amount, txHash) {
-//     try {
-//         const tx = bridgeContract.methods.unlockTokens(user, amount, txHash);
-//         const gas = await tx.estimateGas({ from: account.address });
-//         const gasPrice = await web3.eth.getGasPrice();
-
-//         const txData = {
-//             from: account.address,
-//             to: contractAddress,
-//             data: tx.encodeABI(),
-//             gas,
-//             gasPrice
-//         };
-
-//         const signedTx = await web3.eth.accounts.signTransaction(txData, privateKey);
-//         const receipt = await web3.eth.sendSignedTransaction(signedTx.rawTransaction);
-//         console.log("✅ Tokens Unlocked! Transaction Hash:", receipt.transactionHash);
-//     } catch (error) {
-//         console.error("❌ Unlock Tokens Failed:", error);
-//     }
-// }
-
-// // -----------------------------
-// // Call the Lock Tokens Flow
-// // -----------------------------
-// async function bridgeFlow() {
-//     const amount = tokenAmount;
-//     await approveTokens(amount);
-//     await lockTokens(amount, destinationChainId, destinationAddress);
-//     listenForTokensLocked();
-// }
-
-// // Execute the bridge flow
-// bridgeFlow();
 
 
 
@@ -468,6 +436,7 @@ async function send() {
   padding-left: 0.5rem;
   height: 3.5rem;
   padding-left: 1.5rem;
+  cursor: pointer;
 
 }
 

@@ -407,6 +407,7 @@ export const erc20ABI = [
 
 export const inoaiBridgeAddress = '0xAd35e5605e8298a132609fdDe5E7Dfa2eAdb2dBb'
 export const ethBridgeAddress = '0x5B1E15E59CB9b525741B2eBbb233cfdaF464E09E'
+export const polygonBridgeAddress = '0xA82b217E42e21f364BE15E4fBBB90e81516E0F5d'
 export const inoaiBridgeABI = [
 	{
 		"inputs": [
