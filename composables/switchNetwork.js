@@ -23,14 +23,15 @@ const switchNetwork = async (networkName) => {
     switch (networkName) {
       case 'cronos':
         return {
-          chainId: '0x152', // BSC Mainnet chainId
+          // chainId: '0x152', // BSC Mainnet chainId
+          chainId:'0x19',
           // chainName: 'Cronos Testnet',
           nativeCurrency: {
             // name: 'Test Cronos',
-            symbol: 'TCRO',
+            symbol: 'CRO',
             decimals: 18,
           },
-          rpcUrls: ['https://cronos-testnet.drpc.org'],
+          rpcUrls: ['https://1rpc.io/cro'],
           blockExplorerUrls: ['https://bscscan.com'],
         };
       case 'ino':
@@ -47,16 +48,28 @@ const switchNetwork = async (networkName) => {
         };
         case 'eth':
             return {
-              chainId: '0xAA36A7', // Ethereum Mainnet chainId
+              chainId: '0x1', // Ethereum Mainnet chainId
               // chainName: 'Sepolia',
               nativeCurrency: {
                 // name: 'sepoliaEth',
-                symbol: 'sepoliaEth',
+                symbol: 'Eth',
                 decimals: 18,
               },
-              rpcUrls: ['https://sepolia.infura.io/v3/'],
+              rpcUrls: ['https://1rpc.io/eth'],
               blockExplorerUrls: ['https://sepolia.etherscan.io'],
             };
+            case 'polygon':
+              return {
+                chainId: '0x13882', // Polygon testnet chainId
+                // chainName: 'Polygon',
+                nativeCurrency: {
+                  // name: 'sepoliaEth',
+                  symbol: 'POL',
+                  decimals: 18,
+                },
+                rpcUrls: ['https://rpc-amoy.polygon.technology'],
+                
+              };
       default:
         throw new Error('Unsupported network');
     }

@@ -1,0 +1,19 @@
+chainId(1,25,137,56,43114,250,388,42161, 8453,10)
+
+1 -> ethereum
+25-> cronos
+137 -> polygon
+56 -> BNB snart chain
+43114 -> avalanche
+250 -> fantom
+388 ->cronos zkm
+728126428 -> tron mainnet
+8453 -> Base
+10 -> optimision
+
+
+xitcoin_bridge_contract_cronos -> 0x2789665BA418D43cC2c21c3ca047e09dcA454496
+xitcoin_bridge_contract_eth ->   0x167C3a06255770569cB21323d3864d3886943Bea
+
+
+grief image stone music cereal sample garment pizza hour cloth rapid ball
