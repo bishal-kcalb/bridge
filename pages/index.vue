@@ -207,7 +207,7 @@ const cronosToETH = async () => {
     const feeInEther = web3.utils.toWei('0.001', 'ether');
     await approveTokens(amount, fromNetwork.value.id);
     const transaction = await web3Cronos.methods
-      .lockTokens(amount, BigInt(338), BigInt(80002), to)
+      .lockTokens(amount, BigInt(25), BigInt(1), to)
       .send({ from: senderAddress, value: feeInEther });
 
     const transactionHash = transaction.transactionHash
@@ -215,7 +215,7 @@ const cronosToETH = async () => {
 
     const gasPrice = await web3Rpc.web3EthRpc.eth.getGasPrice();
     const gasLimit = 300000;
-    const unlockTransaction = web3ETH.methods.unlockTokens(to, BigInt(80002), amount, transactionHash).encodeABI();
+    const unlockTransaction = web3ETH.methods.unlockTokens(to, BigInt(1), amount, transactionHash).encodeABI();
     const transactionObject = {
       from: signer,
       to: ethContract,
