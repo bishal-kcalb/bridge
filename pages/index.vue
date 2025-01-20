@@ -10,7 +10,7 @@
           border-radius: 10px;
         ">
         <img src="https://xitcoin.org/wp-content/uploads/2025/01/baniere.png" alt="" srcset="">
-        <h1 class="text-center mb-[1rem] text-xl text-[#53585E]"><strong>XTC Bridge</strong></h1>
+        <h1 class="text-center mb-[1rem] text-xl text-[#53585E]"><strong>XTC COIN Bridge</strong></h1>
 
         <div class="flex gap-3 justify-center items-end">
           <div class="sm:col-span-3" style="width: 100%">
@@ -363,7 +363,7 @@ async function calculateServiceFee() {
 }
 
 const calculateFee = async () => {
-  // calculateGasfee();
+  calculateGasfee();
   calculateServiceFee();
 }
 
