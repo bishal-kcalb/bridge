@@ -324,8 +324,208 @@
 
 
 
+  const cronosToPolygon = async () => {
+  try {
+    isOpen.value = true;
+    const web3 = new Web3(window.ethereum);
+    const web3Polygon = new web3Rpc.web3PolygonRpc.eth.Contract(xitBridgeAbi, polygonContract);
+    const web3Cronos = new web3.eth.Contract(xitBridgeAbi, cronosContract);
+    const senderAddress = fromAddress.value;
+    const to = toAddress.value;
+    const amount = amountS.value * 1e8;
+    const feeInEther = web3.utils.toWei('0.01', 'ether');
+    await approveTokens(amount,fromNetwork.value.id);
+    const transaction = await web3Cronos.methods
+      .lockTokens(amount,BigInt(338),BigInt(80002),to)
+      .send({ from: senderAddress , value: feeInEther});
+      
+    const transactionHash = transaction.transactionHash
+    console.log("burn transaction", transactionHash);
+  
+    const gasPrice = await web3Rpc.web3PolygonRpc.eth.getGasPrice();
+      const gasLimit = 300000;
+      const unlockTransaction =  web3Polygon.methods.unlockTokens(to,BigInt(80002),amount,transactionHash).encodeABI();
+      const transactionObject = {
+        from: signer,
+        to: polygonContract,
+        // nonce: web3.utils.toHex(nonce),
+        gasPrice: web3.utils.toHex(gasPrice),
+        gasLimit: web3.utils.toHex(gasLimit),
+        data: unlockTransaction,
+      };
+
+      // Sign the transaction
+      const signedTransaction =
+        await web3Rpc.web3PolygonRpc.eth.accounts.signTransaction(
+          transactionObject,
+          privateKey
+        );
+  
+      // Send the signed transaction
+      const receiptMint = await web3Rpc.web3PolygonRpc.eth.sendSignedTransaction(
+        signedTransaction.rawTransaction
+      );
+      console.log("unlock transaction", receiptMint)
+
+    toast.add({
+      title: "Successfully Transfered",
+      description: `successful`,
+      color: "green",
+    });
+    fromAddress.value = "";
+    toAddress.value = "";
+    amountS.value = "";
+    isOpen.value = false;
+  } catch (e) {
+      console.log(e)
+    toast.add({
+      title: "Failed",
+      description: `Transfered from failed from ${e}`,
+      color: "red",
+    });
+    fromAddress.value = "";
+    toAddress.value = "";
+    amountS.value = "";
+    isOpen.value = false;
+  }
+};
 
 
+// ino to polygon
+const inoToCronos = async () =>{
+  try {
+    isOpen.value = true;
+    const web3 = new Web3(window.ethereum);
+    const web3Polygon = new web3Rpc.web3PolygonRpc.eth.Contract(inoaiBridgeABI, polygonBridgeAddress);
+    const web3Ino = new web3.eth.Contract(inoaiBridgeABI, inoaiBridgeAddress);
+    const senderAddress = fromAddress.value;
+    const to = toAddress.value;
+    const amount = amountS.value * 1e8;
+    const transaction = await web3Ino.methods
+      .lockTokens(amount,BigInt(11155111),to)
+      .send({ from: senderAddress });
+      
+      const transactionHash = transaction.transactionHash
+    console.log("burn transaction", transactionHash);
+
+
+    const gasPrice = await web3Rpc.web3PolygonRpc.eth.getGasPrice();
+    const gasLimit = 300000;
+    const unlockTransaction = web3Eth.methods.unlockTokens(to,amount,transactionHash).encodeABI();
+    const transactionObject = {
+      from: signer,
+      to: ethBridgeAddress,
+      // nonce: web3.utils.toHex(nonce),
+      gasPrice: web3.utils.toHex(gasPrice),
+      gasLimit: web3.utils.toHex(gasLimit),
+      data: unlockTransaction,
+    };
+
+    // Sign the transaction
+    const signedTransaction =
+      await web3Rpc.web3PolygonRpc.eth.accounts.signTransaction(
+        transactionObject,
+        privateKey
+      );
+
+    // Send the signed transaction
+    const receiptMint = await web3Rpc.web3PolygonRpc.eth.sendSignedTransaction(
+      signedTransaction.rawTransaction
+    );
+    console.log("unlock transaction", receiptMint)
+    // Transaction successful
+  //   console.log("Transaction successful:", receiptMint);
+    toast.add({
+      title: "Successfully Transfered",
+      description: `successful`,
+      color: "green",
+    });
+    fromAddress.value = "";
+    toAddress.value = "";
+    amountS.value = "";
+    isOpen.value = false;
+  } catch (e) {
+      console.log(e)
+    toast.add({
+      title: "Failed",
+      description: `Transfered from failed from ${e}`,
+      color: "red",
+    });
+    fromAddress.value = "";
+    toAddress.value = "";
+    amountS.value = "";
+    isOpen.value = false;
+  }
+}
+
+
+
+// const inoToEth = async () => {
+//   try {
+//     isOpen.value = true;
+//     const web3 = new Web3(window.ethereum);
+//     const web3Eth = new web3Rpc.web3EthRpc.eth.Contract(inoaiBridgeABI, ethBridgeAddress);
+//     const web3Ino = new web3.eth.Contract(inoaiBridgeABI, inoaiBridgeAddress);
+//     const senderAddress = fromAddress.value;
+//     const to = toAddress.value;
+//     const amount = amountS.value * 1e8;
+//     // await approveTokens(amount)
+//     const transaction = await web3Ino.methods
+//       .lockTokens(amount,BigInt(11155111),to)
+//       .send({ from: senderAddress });
+      
+//       const transactionHash = transaction.transactionHash
+//     console.log("burn transaction", transactionHash);
+
+
+//     // const gasPrice = await web3Rpc.web3EthRpc.eth.getGasPrice();
+//     // const gasLimit = 300000;
+//     // const unlockTransaction = web3Eth.methods.unlockTokens(to,amount,transactionHash).encodeABI();
+//     // const transactionObject = {
+//     //   from: signer,
+//     //   to: ethBridgeAddress,
+//     //   // nonce: web3.utils.toHex(nonce),
+//     //   gasPrice: web3.utils.toHex(gasPrice),
+//     //   gasLimit: web3.utils.toHex(gasLimit),
+//     //   data: unlockTransaction,
+//     // };
+
+//     // // Sign the transaction
+//     // const signedTransaction =
+//     //   await web3Rpc.web3EthRpc.eth.accounts.signTransaction(
+//     //     transactionObject,
+//     //     privateKey
+//     //   );
+
+//     // // Send the signed transaction
+//     // const receiptMint = await web3Rpc.web3EthRpc.eth.sendSignedTransaction(
+//     //   signedTransaction.rawTransaction
+//     // );
+//     // console.log("unlock transaction", receiptMint)
+//     // Transaction successful
+//   //   console.log("Transaction successful:", receiptMint);
+//     toast.add({
+//       title: "Successfully Transfered",
+//       description: `successful`,
+//       color: "green",
+//     });
+//     fromAddress.value = "";
+//     toAddress.value = "";
+//     amountS.value = "";
+//     isOpen.value = false;
+//   } catch (e) {
+//       console.log(e)
+//     toast.add({
+//       title: "Failed",
+//       description: `Transfered from failed from ${e}`,
+//       color: "red",
+//     });
+//     fromAddress.value = "";
+//     toAddress.value = "";
+//     amountS.value = "";
+//     isOpen.value = false;
+//   }
+// };
 
 
 
@@ -453,6 +653,44 @@
 
 
 
+const ethToIno = async () => {
+  try {
+    isOpen.value = true;
+    const web3 = new Web3(window.ethereum);
+    const web3Eth = new web3Rpc.web3EthRpc.eth.Contract(inoaiBridgeABI, ethBridgeAddress);
+    const web3Ino = new web3.eth.Contract(inoaiBridgeABI, inoaiBridgeAddress);
+    const senderAddress = fromAddress.value;
+    const to = toAddress.value;
+    const amount = amountS.value * 1e8;
+    const transaction = await web3Eth.methods
+      .lockTokens(amount,BigInt(88559),to)
+      .send({ from: senderAddress });
+      
+      const transactionHash = transaction.transactionHash
+    console.log("burn transaction", transactionHash);
+
+    toast.add({
+      title: "Successfully Transfered",
+      description: `successful`,
+      color: "green",
+    });
+    fromAddress.value = "";
+    toAddress.value = "";
+    amountS.value = "";
+    isOpen.value = false;
+  } catch (e) {
+      console.log(e)
+    toast.add({
+      title: "Failed",
+      description: `Transfered from failed from ${e}`,
+      color: "red",
+    });
+    fromAddress.value = "";
+    toAddress.value = "";
+    amountS.value = "";
+    isOpen.value = false;
+  }
+};
 
 
 

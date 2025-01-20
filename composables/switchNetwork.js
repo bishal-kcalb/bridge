@@ -32,7 +32,7 @@ const switchNetwork = async (networkName) => {
             decimals: 18,
           },
           rpcUrls: ['https://1rpc.io/cro'],
-          blockExplorerUrls: ['https://bscscan.com'],
+          blockExplorerUrls: ['https://cronoscan.com/'],
         };
       case 'ino':
         return {
@@ -56,7 +56,7 @@ const switchNetwork = async (networkName) => {
                 decimals: 18,
               },
               rpcUrls: ['https://1rpc.io/eth'],
-              blockExplorerUrls: ['https://sepolia.etherscan.io'],
+              blockExplorerUrls: ['https://etherscan.io'],
             };
             case 'polygon':
               return {
