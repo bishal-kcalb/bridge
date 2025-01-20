@@ -729,13 +729,13 @@ async function calculateGasfee(){
 const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' });
 const senderAddress = accounts[0];
  const amount = amountS.value * 1e8;
-  const web3Polygon = new web3Rpc.web3PolygonRpc.eth.Contract(xitBridgeAbi, polygonContract);
+  const web3ETH = new web3Rpc.web3EthRpc.eth.Contract(xitBridgeAbi, polygonContract);
   const web3Cronos = new web3Rpc.web3CronosRpc.eth.Contract(xitBridgeAbi,cronosContract);
   const txHash = web3.utils.keccak256("xitcoin-transactionhash-transaction");
-  if(toNetwork.value.id == 'polygon'){
+  if(toNetwork.value.id == 'eth'){
 
-    const estimatedGasFee = await web3Polygon.methods.unlockTokens(toAddress.value, BigInt(80002), amount, txHash).estimateGas({from:senderAddress});
-    const gasPrice = await web3Rpc.web3PolygonRpc.eth.getGasPrice()
+    const estimatedGasFee = await web3ETH.methods.unlockTokens(toAddress.value, BigInt(80002), amount, txHash).estimateGas({from:senderAddress});
+    const gasPrice = await web3Rpc.web3EthRpc.eth.getGasPrice()
     const totalgasPrice = BigInt(estimatedGasFee) * BigInt(gasPrice)
     // console.log('Gas price is ', web3.utils.fromWei(totalgasPrice,'ether'))
     destinationFee.value =  totalgasPrice
