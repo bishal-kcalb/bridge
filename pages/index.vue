@@ -363,7 +363,7 @@ async function calculateServiceFee() {
 }
 
 const calculateFee = async () => {
-  calculateGasfee();
+  // calculateGasfee();
   calculateServiceFee();
 }
 
